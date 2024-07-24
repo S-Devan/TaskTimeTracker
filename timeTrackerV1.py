@@ -1,5 +1,5 @@
 ## First proper working version
-
+    
 from win32gui import GetForegroundWindow
 import datetime
 import psutil
@@ -12,7 +12,6 @@ class Shared_Data:
     def __init__(self):
         self.process_time = 0
         self.lock = Lock()
-
 
 shared_data = Shared_Data()
 
@@ -33,7 +32,7 @@ def getPlaytime():
             #print(f"Time spent on {specific_app}: {process_time} seconds")
         else:
             timestamp = 0
-        time.sleep(1)
+        time.sleep(0.1)
 
 compute_thread = Thread(target=getPlaytime)
 
@@ -51,7 +50,7 @@ def main():
     
     else:
         print(shared_data.process_time)
-        path = r"C:/Users/sdeva/OneDrive/Documents/Tracked Time/VSCode-TestTimeTracking.txt"
+        path = r"C:/Users/sdeva/Documents/TimeTracker/TimeTracker.txt"
         
         # Read current time from file and update it
         read_time_file = open(path, "r")
@@ -60,9 +59,14 @@ def main():
         new_line = ""
         for line in read_time_file:
             stripped_line = line.strip()
+            colon_stripped = stripped_line.replace(":", "")
+            if not colon_stripped.isalnum():
+                continue
             if not stripped_line.isdigit():
                 new_line = stripped_line
                 new_file_content += new_line + "\n"
+
+
             if stripped_line.isdigit():
                 current_time = int(stripped_line)
                 print(f"Current Time: {current_time}")
